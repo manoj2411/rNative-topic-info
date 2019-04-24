@@ -7,6 +7,13 @@ import * as actions from '../actions';
 
 class ListItem extends React.Component {
 
+  renderDescription() {
+    const { library, expanded } = this.props;
+
+    if (expanded) {
+      return <Text> { library.description } </Text>;
+    }
+  }
 
   render() {
     const { library, selectLibrary } = this.props;
@@ -19,6 +26,7 @@ class ListItem extends React.Component {
               {library.title}
             </Text>
           </CardSection>
+          {this.renderDescription()}
         </View>
       </TouchableWithoutFeedback>
     );
@@ -31,4 +39,10 @@ const styles = {
     paddingLeft: 15
   }
 };
-export default connect(null, actions)(ListItem);
+
+const mapStateToProps = (state, ownProps) => {
+  const expanded = state.selectedLibraryId === ownProps.library.id;
+  return { expanded };
+};
+
+export default connect(mapStateToProps, actions)(ListItem);
